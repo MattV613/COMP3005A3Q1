@@ -71,7 +71,6 @@ class A3database:
         # Cursor to get all information from the students table
         cur = self.conn.cursor()
         cur.execute("SELECT * FROM students")
-
         rows = cur.fetchall()
 
         # print all rows
@@ -79,7 +78,6 @@ class A3database:
             print(row)
 
         cur.close()
-
         input("press any key...")
 
     def addStudent(self, first_name, last_name, email, enrollment_date):
@@ -100,6 +98,9 @@ class A3database:
         cur.execute(f"DELETE FROM students\nWHERE student_id = {student_id};")
         self.conn.commit()
         cur.close()
+
+    def conn_rollback(self):
+        self.conn.rollback()
 
 def main():
     # Create the database object
@@ -154,6 +155,7 @@ def main():
                     except psycopg2.errors.UniqueViolation as e:
                         # If the email was not unique, this will catch that error
                         print("\n<ERROR> Email already in use")
+                        db.conn_rollback()
                     except Exception as e:
                         print("\n<ERROR> Invalid date format")
                         print(f"{type(e)}:{e}")
@@ -167,7 +169,7 @@ def main():
                 email = input("Input new email -> ")
                 try:
                     student_id = int(student_id)
-                    assert len(email) > 2 # needs at least an @ and a .
+                    assert len(email) > 0
                     db.updateStudentEmail(student_id, email)
                 except AssertionError as e:
                     print("You must input a valid email")
