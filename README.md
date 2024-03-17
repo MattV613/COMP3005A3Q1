@@ -9,7 +9,7 @@ psycopg2 library (install via pip install psycopg2)
 
 ## Usage:
 
-**Setup Database:** Make sure your PostgreSQL database is set up and running.
+**Setup Database:** Make sure your PostgreSQL database is set up and running. The students table and initial data can be created with A3_createTables.sql
 
 **Install Dependencies:** Install the psycopg2 library using pip install psycopg2.
 
